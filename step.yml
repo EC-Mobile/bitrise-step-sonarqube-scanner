@@ -63,6 +63,36 @@ inputs:
 
     is_required: false
     is_expand: true
+- workspace: 
+    opts:
+      title: "Workspace"
+      description: |
+        The `.xcworkspace` path, relative to
+        the Working directory.
+      is_expand: true
+      is_required: false
+- project: 
+  opts:
+    title: "Project"
+    description: |
+      The `.xcodeproj` path, relative to
+      the Working directory.
+    is_expand: true
+    is_required: false
+- scheme: 
+  opts:
+    title: "Project Scheme"
+    description: |
+      The name of the project scheme.
+    is_expand: true
+    is_required: false
+- binary_basename:
+  opts:
+    title: "Binary Basename"
+    description: |
+      The name of the binary.
+    is_expand: true
+    is_required: false
 - is_debug: "false"
   opts:
     title: Print all executed shell commands to a build log?

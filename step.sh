@@ -42,11 +42,22 @@ unzip "sonar-scanner-cli-${scanner_version}.zip"
 TEMP_DIR=$(pwd)
 popd
 
+slather coverage --llvm-cov --output-directory "llvm-cov" ${binary_basename:+--binary-basename "$binary_basename"} ${workspace:+--workspace "$workspace"} ${scheme:+--scheme "$scheme"} ${project:+"$project"}
+
+if [ -z ${BITRISEIO_GIT_BRANCH_DEST} ]
+then
+    echo "No targetBranchName"
+    branch_flags="-Dsonar.swift.coverage.reportPaths=llvm-cov/report.llcov -Dsonar.branch.name=${BITRISE_GIT_BRANCH}"
+else
+    echo "Target Branch Name"
+    echo ${BITRISEIO_GIT_BRANCH_DEST}
+    branch_flags="-Dsonar.swift.coverage.reportPaths=llvm-cov/report.llcov -Dsonar.pullrequest.branch=${BITRISE_GIT_BRANCH} -Dsonar.pullrequest.base=origin/${BITRISEIO_GIT_BRANCH_DEST} -Dsonar.pullrequest.key=${BITRISE_PULL_REQUEST} -Dsonar.scm.revision=${BITRISE_GIT_COMMIT}"
+fi
+
 if [[ "${is_debug}" == "true" ]]; then
   debug_flag="-X"
 else
   debug_flag=""
 fi
 
-"${TEMP_DIR}/sonar-scanner-${scanner_version}/bin/sonar-scanner" ${debug_flag}
-
+"${TEMP_DIR}/sonar-scanner-${scanner_version}/bin/sonar-scanner" ${branch_flags} ${debug_flag}
