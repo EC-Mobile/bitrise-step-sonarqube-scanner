@@ -43,6 +43,11 @@ inputs:
 
       `latest` can be used to use the latest available scanner
     is_required: true
+- xcresult: $BITRISE_XCRESULT_PATH
+  opts:
+    title: XCResult
+    description: The test's output file path
+    is_required: true
 - scanner_properties:
   opts:
     title: Scanner parameters in Java properties format
